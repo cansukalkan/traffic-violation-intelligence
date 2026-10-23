@@ -1,0 +1,6 @@
+yolo_weights: yolo11n.pt
+vlm_id: Qwen/Qwen3-VL-4B-Instruct
+vlm_4bit: true
+vlm_max_tokens: 256
+# Apache-2.0 lisanslı model seçildi; Qwen2.5-VL-3B yalnızca araştırma lisanslıdır.
+

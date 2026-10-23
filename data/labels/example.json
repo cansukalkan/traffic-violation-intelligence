@@ -1,0 +1,13 @@
+{
+  "clip": "clip_001.mp4",
+  "fps": 10,
+  "events": [
+    {
+      "kind": "red_light",
+      "frame_t": 12.3,
+      "track_id": 4,
+      "note": "kırmızıda durak çizgisini geçti"
+    }
+  ]
+}
+

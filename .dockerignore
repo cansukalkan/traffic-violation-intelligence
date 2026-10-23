@@ -1,0 +1,17 @@
+.git
+.venv
+__pycache__
+*.py[cod]
+.pytest_cache
+.pytest-tmp*
+.mypy_cache
+.ruff_cache
+reports
+data/bdd100k_subset
+data/coco128
+data/coco128.zip
+data/clips
+*.db
+*.pt
+*.onnx
+*.engine

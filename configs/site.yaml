@@ -1,0 +1,33 @@
+camera_id: cam-01
+zones:
+  crosswalk:
+    - [0, 400]
+    - [640, 400]
+    - [640, 460]
+    - [0, 460]
+stop_lines:
+  main:
+    - [0, 380]
+    - [640, 380]
+signal_roi: [500, 20, 540, 60]
+thresholds:
+  min_track_frames: 5
+  red_grace_seconds: 0.5
+  signal_min_pixels: 25
+  signal_min_ratio: 0.02
+pools:
+  FrameReader: 4
+  Detector: 4
+  Tracker: 2
+  ViolationRule: 3
+  SignalWatcher: 2
+  Router: 1
+  Analyst: 4
+  Validator: 2
+  EventWriter: 2
+  Reporter: 2
+  Monitor: 1
+  Alerter: 1
+  Profiler: 1
+  Evaluator: 2
+

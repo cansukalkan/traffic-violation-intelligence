@@ -1,0 +1,7 @@
+# 2026-10-22 Docker kontrolü: NVIDIA runtime kayıtlı, ancak WSL adaptör bulamadı.
+gpu_name: null
+vram_gb: 0
+paths:
+  - pytorch_fp32
+  - onnxruntime_cpu
+

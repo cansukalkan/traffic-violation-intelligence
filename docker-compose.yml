@@ -1,0 +1,89 @@
+services:
+  assets:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: cpu
+    working_dir: /workspace
+    command: ["python", "scripts/bootstrap_assets.py"]
+    volumes:
+      - ./data:/workspace/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: cpu
+    working_dir: /workspace
+    volumes:
+      - ./reports:/workspace/reports
+      - ./data:/workspace/data:ro
+      - huggingface-cache:/root/.cache/huggingface
+
+  gpu-check:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: gpu
+    profiles: ["gpu"]
+    command: ["python", "-c", "import torch; print({'cuda': torch.cuda.is_available(), 'device': torch.cuda.get_device_name(0) if torch.cuda.is_available() else None})"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  gpu-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: gpu
+    profiles: ["gpu"]
+    working_dir: /workspace
+    volumes:
+      - ./reports:/workspace/reports
+      - ./data:/workspace/data:ro
+      - huggingface-cache:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: cpu
+    container_name: traffic-violation-dashboard
+    working_dir: /workspace
+    command:
+      - uvicorn
+      - traffic_violation.web.app:create_app
+      - --factory
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+    environment:
+      TV_ANALYZER_MODE: onnx
+      TV_DATA_DIR: /workspace/reports/dashboard
+      TV_MODEL_PATH: /workspace/models/yolo11n.onnx
+    depends_on:
+      assets:
+        condition: service_completed_successfully
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./reports:/workspace/reports
+      - ./data:/workspace/data:ro
+      - ./yolo11n.onnx:/workspace/models/yolo11n.onnx:ro
+    restart: unless-stopped
+
+volumes:
+  huggingface-cache:
+
