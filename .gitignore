@@ -8,6 +8,18 @@ __pycache__/
 .ultralytics/
 .venv/
 .vscode/
+
+# Local secrets and credentials
+.env
+.env.*
+!.env.example
+secrets/
+.secrets/
+*.pem
+*.key
+*.p12
+*.pfx
+
 runs/
 reports/
 dist/
